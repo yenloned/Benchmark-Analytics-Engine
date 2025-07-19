@@ -27,7 +27,8 @@ class PortfolioAnalyzer:
         portfolio_prices: pd.DataFrame, 
         benchmark_prices: pd.Series,
         portfolio_name: str = "Portfolio",
-        benchmark_name: str = "Benchmark"
+        benchmark_name: str = "Benchmark",
+        weights: Optional[Dict[str, float]] = None
     ) -> Dict:
         """
         Main analysis function - compares portfolio against benchmark
@@ -37,13 +38,14 @@ class PortfolioAnalyzer:
             benchmark_prices: Series with benchmark prices
             portfolio_name: Name for portfolio
             benchmark_name: Name for benchmark
+            weights: Dictionary of stock weights (e.g., {'AAPL': 0.3, 'MSFT': 0.7})
             
         Returns:
             Dictionary with all analysis results
         """
         try:
             # Calculate returns
-            portfolio_returns = self._calculate_portfolio_returns(portfolio_prices)
+            portfolio_returns = self._calculate_portfolio_returns(portfolio_prices, weights)
             benchmark_returns = benchmark_prices.pct_change().dropna()
             
             # Align data (same time period)
@@ -61,6 +63,7 @@ class PortfolioAnalyzer:
                 'data_points': len(portfolio_returns),
                 'start_date': portfolio_returns.index[0].strftime("%Y-%m-%d"),
                 'end_date': portfolio_returns.index[-1].strftime("%Y-%m-%d"),
+                'weights_used': weights if weights else 'equal-weighted',
                 
                 # Performance metrics
                 'portfolio_total_return': self._calculate_total_return(portfolio_returns),
@@ -103,13 +106,26 @@ class PortfolioAnalyzer:
             print(f"Error in portfolio analysis: {e}")
             return {}
     
-    def _calculate_portfolio_returns(self, portfolio_prices: pd.DataFrame) -> pd.Series:
-        """Calculate equal-weighted portfolio returns"""
+    def _calculate_portfolio_returns(self, portfolio_prices: pd.DataFrame, weights: Optional[Dict[str, float]] = None) -> pd.Series:
+        """Calculate portfolio returns with optional custom weights"""
         # Calculate individual stock returns
         stock_returns = portfolio_prices.pct_change().dropna()
         
-        # Equal-weighted portfolio (simple average)
-        portfolio_returns = stock_returns.mean(axis=1)
+        if weights is None:
+            # Equal-weighted portfolio (simple average)
+            portfolio_returns = stock_returns.mean(axis=1)
+        else:
+            # Custom-weighted portfolio
+            portfolio_returns = pd.Series(0.0, index=stock_returns.index)
+            
+            for symbol, weight in weights.items():
+                if symbol in stock_returns.columns:
+                    portfolio_returns += stock_returns[symbol] * weight
+            
+            # Normalize weights if they don't sum to 1
+            total_weight = sum(weights.values())
+            if total_weight != 0:
+                portfolio_returns = portfolio_returns / total_weight
         
         return portfolio_returns
     
