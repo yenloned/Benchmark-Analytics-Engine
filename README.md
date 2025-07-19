@@ -1,6 +1,6 @@
 # Benchmark Analytics Engine
 
-A comprehensive desktop application for portfolio analysis and benchmark comparison. This project built a robust financial applications with proper error handling, data processing, and quantitative analysis capabilities.
+A comprehensive desktop application for stock portfolio analysis and benchmark comparison. This project built a robust financial applications with proper error handling, data processing, and quantitative analysis capabilities.
 
 ## 🛠️ Setup and Installation
 
@@ -34,12 +34,6 @@ matplotlib==3.8.2     # Data visualization
 tkinter-tooltip==2.1.0 # GUI enhancements
 ```
 
-### Design Patterns
-- **Service Layer Pattern**: Separate data, analysis, and UI concerns
-- **Factory Pattern**: Chart generation with configurable parameters
-- **Observer Pattern**: UI updates based on analysis completion
-- **Strategy Pattern**: Different calculation methods for various metrics
-
 ## 📖 How to Use
 
 ### Getting Started
@@ -60,8 +54,6 @@ tkinter-tooltip==2.1.0 # GUI enhancements
    - In the "Portfolio Weights" section, specify percentages for each stock
    - Ensure total equals 100%
    - Click "Analyze Portfolio"
-
-### Step-by-Step Guide
 
 #### Step 1: Enter Portfolio Symbols
 - **Manual Entry**: Type stock symbols separated by commas
