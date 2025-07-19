@@ -1,6 +1,6 @@
 # Benchmark Analytics Engine
 
-A comprehensive desktop application for portfolio analysis and benchmark comparison, demonstrating advanced Python programming skills and deep financial knowledge. This project showcases the ability to build robust financial applications with proper error handling, data processing, and quantitative analysis capabilities.
+A comprehensive desktop application for portfolio analysis and benchmark comparison. This project showcases the ability to build robust financial applications with proper error handling, data processing, and quantitative analysis capabilities.
 
 ## 🚀 Features
 
